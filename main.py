@@ -22,9 +22,7 @@ def result():
     select = request.form.get('comp_select')
     # call 'query_api()' method from weather.py
     resp = query_api(select)
-    
-    pp(resp)
-    
+    #pp(resp)
     if resp:
         data.append(resp)
         if len(data) != 2:
