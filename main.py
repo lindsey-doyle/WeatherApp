@@ -1,7 +1,10 @@
 # path
-from pprint import pprint as pp
 from flask import Flask, render_template, flash, redirect, url_for, request
-from weather import query_api
+from pprint import pprint as pp
+import datetime
+
+# should move weather. into src folder at some point 
+from weather import query_api, get_time
 
 app = Flask(__name__)
 
@@ -20,14 +23,19 @@ def result():
     data = []
     error = None
     select = request.form.get('comp_select')
-    # call 'query_api()' method from weather.py
     resp = query_api(select)
     #pp(resp)
     if resp:
         data.append(resp)
+         # convert sunset time 
+        sunset = get_time(data[0]['sys']['sunset'])
         if len(data) != 2:
             error = 'Bad Response from Weather API'
-    return render_template('result.html', data=data, error=error)
+        #else:
+            # convert sunset time 
+            #sunset = get_time(data[0]['sys']['sunset'])
+
+    return render_template('result.html', data=data, sunset=sunset, error=error)
 
 
 if __name__ == "__main__":
